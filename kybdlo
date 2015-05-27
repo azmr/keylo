@@ -15,4 +15,13 @@ get_keycodes(){
 
 # TODO: display keyboard
 
-# TODO: fix display
+prompt_command(){
+	# get keycodes each call if --recheck set
+	if [ $1 == "-r" -o "--recheck" ]
+	then get_keycodes
+	fi
+	display_keys
+}
+
+# fix display
+PROMPT_COMMAND=prompt_command
