@@ -17,6 +17,24 @@ get_keycodes
 # TODO: word to symbol func
 
 # TODO: display keyboard
+display_keys(){
+	lines[0]=""
+	screen_centre=$(($(tput cols)/2))
+	let key_start_col=$(( screen_centre - 12 ))
+	# tput cuu1
+	tput sc
+	for i in ${!lines[@]}; do
+		tput cup $i $key_start_col
+		tput el1
+		tput el
+		echo -e "${lines[$i]}"
+	done
+	# clear line below shown keys
+	tput el1
+	tput el
+	tput rc
+}
+display_keys
 
 prompt_command(){
 	# get keycodes each call if --recheck set
@@ -27,4 +45,5 @@ prompt_command(){
 }
 
 # fix display
-PROMPT_COMMAND=prompt_command
+## TODO: if prompt_command not in PROMPT_COMMAND
+# PROMPT_COMMAND=prompt_command
