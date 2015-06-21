@@ -10,16 +10,27 @@ get_keycodes(){
 	for k in ${!letter_order[@]}; do
 		keys["${letter_codes[$k]}"]="${letter_order[$k]}"
 	done
-	keys[$(dumpkeys | grep -o "\w\w(?=\s=\ssemicolon)")]=";"
+	keys[$(dumpkeys | grep -oP "\w\w(?=\s=\ssemicolon)")]=";"
 }
 get_keycodes
 
 # TODO: word to symbol func
 
-# TODO: display keyboard
+line_create(){
+	for v in "${keys[@]:$2:$((1+$3-$2))}"
+	do
+		lines["$1"]="${lines[$1]} $v"
+	done
+}
+
 display_keys(){
-	lines[0]=""
-	screen_centre=$(($(tput cols)/2))
+	unset lines
+	line_create 0 16 25
+	lines[1]=" "
+	line_create 1 30 39
+	lines[2]="  "
+	line_create 2 44 50
+	screen_centre=$(( $(tput cols) / 2 ))
 	let key_start_col=$(( screen_centre - 12 ))
 	# tput cuu1
 	tput sc
