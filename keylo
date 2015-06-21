@@ -4,14 +4,17 @@
 
 # TODO: get rest of keycodes
 get_keycodes(){
-	letter_codes=$(dumpkeys | grep -oP "\d\d(?=\s=\s[+]\w)")
-	letter_order=$(dumpkeys | grep -oP "(?<=\d\d\s=\s[+])\w")
+	letter_codes=($(dumpkeys | grep -oP "\d\d(?=\s=\s[+]\w)"))
+	letter_order=($(dumpkeys | grep -oP "(?<=\d\d\s=\s[+])\w"))
 	# put letter at keys[keycode]
 	for k in ${!letter_order[@]}; do
-		keys[${letter_codes[$k]}]=${letter_order[$k]}
+		keys["${letter_codes[$k]}"]="${letter_order[$k]}"
 	done
-	keys[{$(dumpkeys | grep -o "\w\w(?=\s=\ssemicolon)")]=";"
+	keys[$(dumpkeys | grep -o "\w\w(?=\s=\ssemicolon)")]=";"
 }
+get_keycodes
+
+# TODO: word to symbol func
 
 # TODO: display keyboard
 
